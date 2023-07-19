@@ -8,7 +8,7 @@ ARG HEADERS_MORE_VERSION=v0.34
 RUN apt-get update \
     && apt-get install -y \
         build-essential \
-        libpcre++-dev \
+        libpcre3-dev \
         zlib1g-dev \
         libgeoip-dev \
         wget \
