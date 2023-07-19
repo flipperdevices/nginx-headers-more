@@ -1,8 +1,8 @@
-ARG NGINX_VERSION=1.22.1
+ARG NGINX_VERSION=1.25.1
 
 FROM nginx:$NGINX_VERSION
 
-ARG NGINX_VERSION=1.22.1
+ARG NGINX_VERSION=1.25.1
 ARG HEADERS_MORE_VERSION=v0.34
 
 RUN apt-get update \
@@ -15,15 +15,15 @@ RUN apt-get update \
         git
 
 RUN cd /opt \
-    && git clone --depth 1 -b $HEADERS_MORE_VERSION --single-branch https://github.com/openresty/headers-more-nginx-module.git \
+    && git clone --depth 1 -b "$HEADERS_MORE_VERSION" --single-branch https://github.com/openresty/headers-more-nginx-module.git \
     && cd /opt/headers-more-nginx-module \
     && git submodule update --init \
     && cd /opt \
-    && wget -O - http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz | tar zxfv - \
-    && mv /opt/nginx-$NGINX_VERSION /opt/nginx \
+    && wget -O - "http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz" | tar zxfv - \
+    && mv "/opt/nginx-$NGINX_VERSION" /opt/nginx \
     && cd /opt/nginx \
     && ./configure --with-compat --add-dynamic-module=/opt/headers-more-nginx-module \
-    && make modules 
+    && make modules
 
 FROM nginx:$NGINX_VERSION
 
@@ -31,4 +31,4 @@ COPY --from=0 /opt/nginx/objs/ngx_http_headers_more_filter_module.so /usr/lib/ng
 
 RUN chmod -R 644 \
         /usr/lib/nginx/modules/ngx_http_headers_more_filter_module.so \
-    && sed -i '1iload_module \/usr\/lib\/nginx\/modules\/ngx_http_headers_more_filter_module.so;' /etc/nginx/nginx.conf 
+    && sed -i '1iload_module \/usr\/lib\/nginx\/modules\/ngx_http_headers_more_filter_module.so;' /etc/nginx/nginx.conf
