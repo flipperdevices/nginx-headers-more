@@ -1,14 +1,14 @@
-ARG NGINX_VERSION=1.25.1
+ARG NGINX_VERSION=1.30.1
 
 FROM nginx:$NGINX_VERSION
 
-ARG NGINX_VERSION=1.25.1
-ARG HEADERS_MORE_VERSION=v0.34
+ARG NGINX_VERSION=1.30.1
+ARG HEADERS_MORE_VERSION=v0.39
 
 RUN apt-get update \
     && apt-get install -y \
         build-essential \
-        libpcre3-dev \
+        libpcre2-dev \
         zlib1g-dev \
         libgeoip-dev \
         wget \
